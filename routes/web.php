@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Redirect;
 use App\Http\Controllers\indicadorController;
+use App\Http\Controllers\GraficoController;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,4 +31,7 @@ Route::middleware([
     Route::get('/dashboard', function () {return Inertia::render('Dashboard');})->name('dashboard');
     Route::get('/indicadores', [indicadorController::class,'getIndicador'])->name('indicadores');
     Route::get('/get-indicadores/{page}', [indicadorController::class,'getIndicadoresLocal']);
+    Route::resource('indicador', indicadorController::class);
+    Route::get('/grafico', function () {return Inertia::render('Grafico');})->name('grafico');
+    Route::post('get-pick-uf', [GraficoController::class,'getData']);
 });

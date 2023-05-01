@@ -6,7 +6,7 @@
     },
     "devDependencies": {
         "@inertiajs/vue3": "^1.0.0",
-        "@tailwindcss/forms": "^0.5.2",
+        "@tailwindcss/forms": "^0.5.3",
         "@tailwindcss/typography": "^0.5.2",
         "@vitejs/plugin-vue": "^4.0.0",
         "autoprefixer": "^10.4.7",
@@ -19,6 +19,9 @@
         "vue": "^3.2.31"
     },
     "dependencies": {
-        "@hennge/vue3-pagination": "^1.0.17"
+        "@hennge/vue3-pagination": "^1.0.17",
+        "chart.js": "^4.3.0",
+        "vue-chartjs": "^5.2.0",
+        "vue-sweetalert2": "^5.0.5"
     }
 }

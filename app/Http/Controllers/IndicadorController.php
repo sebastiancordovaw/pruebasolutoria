@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Exception;
 use App\Models\Indicador;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class IndicadorController extends Controller
 {
@@ -37,6 +38,33 @@ class IndicadorController extends Controller
     public function store(Request $request)
     {
         //
+        $validator = Validator::make($request->all(), [
+            "nombreIndicador" => "required",
+            "codigoIndicador" => "required",
+            "unidadMedidaIndicador" => "required",
+            "valorIndicador" => "required",
+            "fechaIndicador" => "required|date",
+            "tiempoIndicador" => "required|date",
+            //"origenIndicador" => "required|url"
+            "origenIndicador" => "required"
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'errors' =>$validator->errors(),
+            ], 422);
+        }
+
+            Indicador::create([
+            "nombreIndicador" => $request->input('nombreIndicador'),
+            "codigoIndicador" => $request->input('codigoIndicador'),
+            "unidadMedidaIndicador" => $request->input('unidadMedidaIndicador'),
+            "valorIndicador" => $request->input('valorIndicador'),
+            "fechaIndicador" => $request->input('fechaIndicador'),
+            "tiempoIndicador" => $request->input('tiempoIndicador'),
+            //"origenIndicador" => "required|url"
+            "origenIndicador" => $request->input('origenIndicador')
+        ]);
     }
 
     /**
@@ -70,7 +98,34 @@ class IndicadorController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            "nombreIndicador" => "required",
+            "codigoIndicador" => "required",
+            "unidadMedidaIndicador" => "required",
+            "valorIndicador" => "required",
+            "fechaIndicador" => "required|date",
+            "tiempoIndicador" => "required|date",
+            //"origenIndicador" => "required|url"
+            "origenIndicador" => "required"
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'errors' =>$validator->errors(),
+            ], 422);
+        }
+
+            Indicador::where("id",$id)
+            ->update([
+            "nombreIndicador" => $request->input('nombreIndicador'),
+            "codigoIndicador" => $request->input('codigoIndicador'),
+            "unidadMedidaIndicador" => $request->input('unidadMedidaIndicador'),
+            "valorIndicador" => $request->input('valorIndicador'),
+            "fechaIndicador" => $request->input('fechaIndicador'),
+            "tiempoIndicador" => $request->input('tiempoIndicador'),
+            //"origenIndicador" => "required|url"
+            "origenIndicador" => $request->input('origenIndicador')
+        ]);
     }
 
     /**
@@ -81,7 +136,8 @@ class IndicadorController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Indicador::where('id', $id)->delete();
+        return true;
     }
 
     public function getIndicador()
