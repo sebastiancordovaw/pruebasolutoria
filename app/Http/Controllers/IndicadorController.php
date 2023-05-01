@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use Exception;
 use App\Models\Indicador;
+use Illuminate\Http\Request;
+
 class IndicadorController extends Controller
 {
     /**
@@ -93,7 +95,15 @@ class IndicadorController extends Controller
                 $result = self::procesarData($data,"UF");
                 if($result)
                 {
-                    self::insertMasivo($result);
+                    $count = self::insertMasivo($result);
+                    if($count>0)
+                    {
+                        echo "se insertaron ".$count. " filas";
+                    }
+                    else
+                    {
+                        echo $count;
+                    }
                 }
             }
             else{
@@ -171,6 +181,29 @@ class IndicadorController extends Controller
 
     public function insertMasivo($data)
     {
-        Indicador::insert($data);
+        try
+        {
+            Indicador::truncate();
+            $result = Indicador::insert($data);
+            if($result)
+            {
+                return Indicador::all()->count();
+            }
+        }
+        catch (Exception $e) {
+            Indicador::rollback();
+            return $e;
+        }
+    }
+
+    public function getIndicadoresLocal($page)
+    {
+        $perPage = 10;
+        $from = ($page * $perPage) -  $perPage;
+        $data  = Indicador::orderBy('fechaIndicador', 'desc')
+        ->skip($from)->take($perPage)
+        ->get();
+        $page_count = ceil(count(Indicador::all())/$perPage);
+        return ["data"=>$data,"page_count"=>$page_count];
     }
 }

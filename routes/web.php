@@ -29,4 +29,5 @@ Route::middleware([
 ])->group(function () {
     Route::get('/dashboard', function () {return Inertia::render('Dashboard');})->name('dashboard');
     Route::get('/indicadores', [indicadorController::class,'getIndicador'])->name('indicadores');
+    Route::get('/get-indicadores/{page}', [indicadorController::class,'getIndicadoresLocal']);
 });
